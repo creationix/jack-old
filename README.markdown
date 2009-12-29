@@ -43,7 +43,7 @@ Jack is a new language in development that gets translated to pure JavaScript an
         age: age
 
     // Use the object factory  
-    jack = person("Jack", 3)
+    jack = Person("Jack", 3)
 
     // Test the objects
     tim.greet
