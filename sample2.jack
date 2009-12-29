@@ -1,0 +1,16 @@
+// Standard JSON style object
+var me = { name: "Tim", age: 27 }
+
+// Object with prototype
+var dog = { legs: 4, friendly: true }
+var pet = {dog name: "Fred" }
+
+// Standard JSON style list
+[ "Green", "Orange", 'Blue' ]
+
+// List with protptype
+[HtmlColors 0x00ff00, 0xff8800, 0x0000ff ]
+true
+false
+null
+
