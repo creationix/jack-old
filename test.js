@@ -59,6 +59,9 @@ Object.new_inherited = function (parent, params, parent_name) {
 
 // `parent` must have Array.prototype somewhere in it's chain
 Array.new_inherited = function (parent, items, parent_name) {
+  if (! Array.prototype.isPrototypeOf(parent)) {
+    throw new TypeError("Parent must be a decendent of Array.prototype");
+  }
   var o;
   o = Object.create(parent);
   items.forEach(function (item) {
