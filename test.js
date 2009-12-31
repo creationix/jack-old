@@ -46,42 +46,24 @@ Boolean.prototype.toHTML = function () {
   return colored("880055", JSON.stringify(this));
 }
 
-Object.create = function (o) {
-  var F = function () {};
-  F.prototype = o;
-  return new F();
-};
-
 Object.new_inherited = function (parent, params, parent_name) {
-  var o, F;
-  F = function () {
-    for (var key in params) {
-      if (params.hasOwnProperty(key)) {
-        this[key] = params[key];
-      }
+  var o = Object.create(parent);
+  for (var key in params) {
+    if (params.hasOwnProperty(key)) {
+      o[key] = params[key];
     }
-  };
-  F.prototype = parent;
-  o = new F();
+  }
   o._parent_name_ = parent_name;
   return o;
 };
 
+// `parent` must have Array.prototype somewhere in it's chain
 Array.new_inherited = function (parent, items, parent_name) {
-  var o, p, F;
-  
-  p = [];
-  for (var key in parent) {
-    p[key] = parent[key];
-  }
-  F = function () {
-    var self = this;
-    items.forEach(function (item) {
-      self.push(item);
-    });
-  };
-  F.prototype = p;
-  o = new F();
+  var o;
+  o = Object.create(parent);
+  items.forEach(function (item) {
+    o.push(item);
+  });
   o._parent_name_ = parent_name;
   return o;
 };
@@ -98,15 +80,16 @@ debug(pet.toHTML());
 // debug(inspect(dog));
 // debug(inspect(pet));
 
-var HtmlColors = {
+// var HtmlColors = {[] toHTML: function () {...} }
+var HtmlColors = Object.new_inherited([], {
   toHTML: function () {
     return "[" + colored("332211", "HtmlColors") + " " + this.map(function (color) {
       return '<span style="color: ' + color + '">' + color + '</span>';
     }).join(", ") + "]";
   }
-};
+}, 'Array');
 
-// [HtmlColors "#fe5410", "#0189ef", "#10ab01", "orange", "blue", "green" ]
+// var colors = [HtmlColors "#fe5410", "#0189ef", "#10ab01", "orange", "blue", "green" ]
 var colors = Array.new_inherited(HtmlColors, ["#fe5410", "#0189ef", "#10ab01", "orange", "blue", "green"], "HtmlColors");
 debug(colors.toHTML());
 
