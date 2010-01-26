@@ -1,0 +1,56 @@
+# Boolean Literals
+# (Superset of JavaScript)
+true
+false
+on
+off
+yes
+no
+
+# Number Literals
+# (Same as JavaScript)
+0x234322
+0123142
+523
+123.32
+0.32
+0.234
+
+# String Literals
+# Single quote only, but with heredoc style added
+# Heredoc contents don't include opening line and
+# are left trimmed to match closing triplet.
+'Hello \'World\''
+'''
+  Hello "World"
+  In 'Multi' lines
+  '''
+
+
+# Regular Expression literals
+/123/g
+/^([^a-z]+)$/i
+
+# Interpolated literals
+# Double quotes and double heredoc
+# Values are replaced last minute by a smart agent.
+# (SQL escaper, HTML escape)
+"Hello :planetoid"
+"""
+  Hello :planetoid
+  In Multi lines
+  """
+"Does Jack ? in the ?\?"
+
+# Interpolated use cases
+":noun :verb" < noun: "World", verb: "Greets"
+#-> "World" + " " + "Greets"
+#=> "World Greets"
+
+"SELECT * FROM users WHERE name=:name" <SQL id: "O'Connor"
+#-> "SELECT * FROM users WHERE name=" + SQL.escape("O'Connor")
+#=> "SELECT * FROM users WHERE name='O''Connor'"
+
+"Hello ?" <JSON "World"
+#-> "Hello " + JSON.escape("World")
+#=> "Hello \"World\""
