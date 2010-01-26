@@ -26,11 +26,6 @@ no
   In 'Multi' lines
   '''
 
-
-# Regular Expression literals
-/123/g
-/^([^a-z]+)$/i
-
 # Interpolated literals
 # Double quotes and double heredoc
 # Values are replaced last minute by a smart agent.
@@ -43,14 +38,53 @@ no
 "Does Jack ? in the ?\?"
 
 # Interpolated use cases
-":noun :verb" < noun: "World", verb: "Greets"
-#-> "World" + " " + "Greets"
-#=> "World Greets"
+  ":noun :verb" < noun: "World", verb: "Greets"
+  #-> "World" + " " + "Greets"
+  #=> "World Greets"
 
-"SELECT * FROM users WHERE name=:name" <SQL id: "O'Connor"
-#-> "SELECT * FROM users WHERE name=" + SQL.escape("O'Connor")
-#=> "SELECT * FROM users WHERE name='O''Connor'"
+  "SELECT * FROM users WHERE name=:name" <SQL id: "O'Connor"
+  #-> "SELECT * FROM users WHERE name=" + SQL.escape("O'Connor")
+  #=> "SELECT * FROM users WHERE name='O''Connor'"
 
-"Hello ?" <JSON "World"
-#-> "Hello " + JSON.escape("World")
-#=> "Hello \"World\""
+  "Hello ?" <JSON "World"
+  #-> "Hello " + JSON.escape("World")
+  #=> "Hello \"World\""
+
+# Regular Expression literals
+/123/g
+/^([^a-z]+)$/i
+
+# List Literals
+[ 1, 2, 3, 4 ]
+[
+  1,0,0
+  0,1,0
+  0,0,1
+]
+
+# Object Literals
+{ name: "Tim", age: 27 }
+{
+  name: "Tim"
+  age: 27
+}
+
+# Delegated Objects
+# Creates a new object that inherits from the given
+# prototype, and then overrides some properties.
+{Animal name: "George", color: "Brown"}
+{Animal
+  name: "George"
+  color: "Brown"
+}
+
+# Delegated Lists
+# Creates a clone of the passed in List-like object
+# but replaces the contents with that given.
+[HTMLColors 0x000000, 0xff8800, 0x0088ff, 0x887788]
+[HTMLColors
+  0x000000
+  0xff8800
+  0x0088ff
+  0x887788
+]
