@@ -63,19 +63,19 @@ no
 ]
 
 # Object Literals
-{ name: "Tim", age: 27 }
+{name="Tim" age=27}
 {
-  name: "Tim"
-  age: 27
+  name="Tim"
+  age=27
 }
 
 # Delegated Objects
 # Creates a new object that inherits from the given
 # prototype, and then overrides some properties.
-{Animal name: "George", color: "Brown"}
+{Animal name="George" color="Brown"}
 {Animal
-  name: "George"
-  color: "Brown"
+  name="George"
+  color="Brown"
 }
 
 # Delegated Lists
@@ -88,3 +88,8 @@ no
   0x0088ff
   0x887788
 ]
+
+# Function literal
+fun x -> x * x
+# Curried function
+fun a -> b -> a + b
