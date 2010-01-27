@@ -29,25 +29,29 @@ no
 # Double quotes and double heredoc
 # Values are replaced last minute by a smart agent.
 # (SQL escaper, HTML escape)
-"Hello :planetoid"
-"""
-  Hello :planetoid
-  In Multi lines
+"Hello $planetoid"
+SQL"""
+  SELECT * FROM users
+  WHERE name = $name
   """
-"Does Jack ? in the ?\?"
+HTML"<h$l>$title</h$l>"
 
 # Interpolated use cases
-  ":noun :verb" < noun: "World", verb: "Greets"
-  #-> "World" + " " + "Greets"
+  noun = 'World'
+  verb = 'Greets'
+  "$noun :verb"
+  #-> String.interpolate(noun, " ", verb)
   #=> "World Greets"
 
-  "SELECT * FROM users WHERE name=:name" <SQL id: "O'Connor"
-  #-> "SELECT * FROM users WHERE name=" + SQL.escape("O'Connor")
+  name = 'O\'Connor'
+  SQL"SELECT * FROM users WHERE name=$name"
+  #-> SQL.interpolate("SELECT * FROM users WHERE name=", name)
   #=> "SELECT * FROM users WHERE name='O''Connor'"
 
-  "Hello ?" <JSON "World"
-  #-> "Hello " + JSON.escape("World")
-  #=> "Hello \"World\""
+  data = {name="Tim" age=27}
+  JSON"{name: ${data.name}, age: ${data.age}"
+  #-> JSON.interpolate("{name: ", name, ", data.age: ", data.age}")
+  #=> "{name: "Tim", age: 27}"
 
 # Regular Expression literals
 /123/g
