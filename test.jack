@@ -1,3 +1,4 @@
+"cool ${\"stuff $more\"}."
 "content $var"
 "$var content"
 "content $var content"
@@ -59,7 +60,7 @@ HTML"<h$l>$title</h$l>"
 # http://google-caja.googlecode.com/svn/changes/mikesamuel/string-interpolation-29-Jan-2008/trunk/src/js/com/google/caja/interp/index.html
 # Interpolated use cases
   "$noun $verb"
-  #-> String.interpolate(noun, " ", verb)
+  #-> (noun + " " + verb)
   #=> "World Greets"
 
   SQL"SELECT * FROM users WHERE name=$name"
