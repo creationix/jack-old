@@ -11,9 +11,12 @@ no
 # (Same as JavaScript)
 0xff0088
 523
+0XFFEE33
 123.32
 -0.32
 0.234
+6.02e23
+6.02E23
 
 # String Literals
 # Single quote only, but with heredoc style added
