@@ -9,11 +9,10 @@ no
 
 # Number Literals
 # (Same as JavaScript)
-0x234322
-0123142
+0xff0088
 523
 123.32
-0.32
+-0.32
 0.234
 
 # String Literals
