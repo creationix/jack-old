@@ -36,19 +36,16 @@ SQL"""
   """
 HTML"<h$l>$title</h$l>"
 
+# http://google-caja.googlecode.com/svn/changes/mikesamuel/string-interpolation-29-Jan-2008/trunk/src/js/com/google/caja/interp/index.html
 # Interpolated use cases
-  noun = 'World'
-  verb = 'Greets'
   "$noun :verb"
   #-> String.interpolate(noun, " ", verb)
   #=> "World Greets"
 
-  name = 'O\'Connor'
   SQL"SELECT * FROM users WHERE name=$name"
   #-> SQL.interpolate("SELECT * FROM users WHERE name=", name)
   #=> "SELECT * FROM users WHERE name='O''Connor'"
 
-  data = {name="Tim" age=27}
   JSON"{name: ${data.name}, age: ${data.age}"
   #-> JSON.interpolate("{name: ", name, ", data.age: ", data.age}")
   #=> "{name: "Tim", age: 27}"
