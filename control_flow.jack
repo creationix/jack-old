@@ -6,4 +6,6 @@ Animal = {legs=4 eyes=2}
 # Conditionals
 if strange_stuff
   Octocat = {Animal legs=8}
+else
+  Cat = {Animal}
 end

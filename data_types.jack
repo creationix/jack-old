@@ -94,3 +94,8 @@ HTML"<h$l>$title</h$l>"
 
 # Function literal
 fun x -> true
+# Block Function
+fun x, y ->
+  x
+  y
+end

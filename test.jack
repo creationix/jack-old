@@ -1,20 +1,3 @@
-"content $var"
-"$var content"
-"content $var content"
-"$var content $var"
-"content"
-"$var"
-"${var}${var}"
-""
-SQL"content $var"
-SQL"$var content"
-SQL"content $var content"
-SQL"$var content $var"
-SQL"content"
-SQL"$var"
-SQL"${var}${var}"
-SQL""
-
 # Boolean Literals
 # (Superset of JavaScript)
 true
@@ -58,7 +41,7 @@ HTML"<h$l>$title</h$l>"
 
 # http://google-caja.googlecode.com/svn/changes/mikesamuel/string-interpolation-29-Jan-2008/trunk/src/js/com/google/caja/interp/index.html
 # Interpolated use cases
-  "$noun $verb"
+  "$noun :verb"
   #-> String.interpolate(noun, " ", verb)
   #=> "World Greets"
 
@@ -110,6 +93,9 @@ HTML"<h$l>$title</h$l>"
 ]
 
 # Function literal
-fun x -> x
-# Curried function
-fun a -> b -> x
+fun x -> true
+# Block Function
+fun x, y ->
+  x
+  y
+end
