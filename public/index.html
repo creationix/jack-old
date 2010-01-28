@@ -15,6 +15,17 @@
     <script type="text/javascript" src="lib/jack.js"></script>
     <script type="text/javascript" src="demo.js"></script>
     <script id="sample" type="text/jack">
+Animal = {legs=4 eyes=2}
+Insect = {Animal legs=6}
+Classes = {
+  Animal=Animal
+  Insect=Insect
+}
+
+greet = fun name, obj -> "$name has ${obj.legs} legs and ${obj.eyes} eyes."
+
+
+
 # Boolean Literals
 # (Superset of JavaScript)
 true
