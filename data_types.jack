@@ -95,4 +95,4 @@ HTML"<h$l>$title</h$l>"
 # Function literal
 fun x -> true
 # Curried function
-fun a -> b -> 0.000000000123
+fun a, b -> c -> 0.000000000123

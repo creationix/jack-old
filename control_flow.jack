@@ -1,13 +1,4 @@
 # Assignment
 language = "Jack"
-square = fun x -> x * x
-curried = fun x -> y -> x + y
-
-# Method Call
-square 4
-#=> 16
-
-partial = curried 8
-#=> [Function]
-partial 2
-#=> 10
+cool = true
+Animal = {legs=4 eyes=2}
