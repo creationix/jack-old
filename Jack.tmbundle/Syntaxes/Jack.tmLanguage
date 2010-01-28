@@ -18,13 +18,13 @@
 	<array>
 		<dict>
 			<key>match</key>
-			<string>\b(var|if|else|object|while|for|return)\b</string>
+			<string>\b(if|else|end|while|for|return|fun)\b</string>
 			<key>name</key>
 			<string>keyword.control.jack</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b((0(x|X)[0-9a-fA-F]+)|([0-9]+(\.[0-9]+)?))\b</string>
+			<string>((0[xX][0-9a-fA-F]+)|(?x:-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?))\b</string>
 			<key>name</key>
 			<string>constant.numeric.jack</string>
 		</dict>
@@ -63,7 +63,64 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>"</string>
+			<string>(?&lt;=[=(:]|^|return)\s*(/)(?![/*+{}?])</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.string.begin.js</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(/)[igm]*</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.string.end.js</string>
+				</dict>
+			</dict>
+			<key>name</key>
+			<string>string.regexp.jack</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\\.</string>
+					<key>name</key>
+					<string>constant.character.escape.jack</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>'''</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.string.begin.jack</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>'''</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.string.end.jack</string>
+				</dict>
+			</dict>
+			<key>name</key>
+			<string>string.quoted.single.heredoc.jack</string>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>([a-zA-Z_$][a-zA-Z0-9_$]*)?"</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>0</key>
@@ -120,19 +177,19 @@
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>(//).*$\n?</string>
+			<string>(#).*$\n?</string>
 			<key>name</key>
 			<string>comment.line.double-slash.jack</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\btrue\b</string>
+			<string>\b(true|on|yes)\b</string>
 			<key>name</key>
 			<string>constant.language.boolean.true.jack</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\bfalse\b</string>
+			<string>\b(false|off|no)\b</string>
 			<key>name</key>
 			<string>constant.language.boolean.false.jack</string>
 		</dict>
