@@ -40,116 +40,76 @@
     <script type="text/javascript" src="lib/jack.js"></script>
     <script type="text/javascript" src="demo.js"></script>
     <script id="sample" type="text/jack">
-Animal = {legs=4 eyes=2}
-Insect = {Animal legs=6}
-Classes = {
-  Animal=Animal
-  Insect=Insect
+# Assignment:
+number = 42
+opposite_day = true
+
+# Conditions:
+if opposite_day
+  number = -42
+end
+
+# Functions:
+square = fun x -> /x * x/g
+curry = fun a -> fun b -> "$a + $b"
+# Arrays:
+list = [1, 2, 3, 4, 5]
+
+# Objects:
+math = {
+  root   = Math
+  square = square
+  cube   = fun x -> true
 }
 
-greet = fun name, obj -> "$name has ${obj.legs} legs and ${obj.eyes} eyes."
-
-
-
-# Boolean Literals
-# (Superset of JavaScript)
-true
-false
-on
-off
-yes
-no
-
-# Number Literals
-# (Same as JavaScript)
-0xff0088
-523
-0XFFEE33
-123.32
--0.32
-0.234
-6.02e23
-6.02E23
-
-# String Literals
-# Single quote only, but with heredoc style added
-# Heredoc contents don't include opening line and
-# are left trimmed to match closing triplet.
-'Hello \'World\''
-'''
-  Hello "World"
-  In 'Multi' lines
+# Heredoc
+message = '''
+    Several lines
+  that can be
+  indented.
   '''
 
-# Interpolated literals
-# Double quotes and double heredoc
-# Values are replaced last minute by a smart agent.
-# (SQL escaper, HTML escape)
-"Hello $planetoid"
-SQL"""
-  SELECT * FROM users
-  WHERE name = $name
+# Block functions:
+race = fun winner, runners ->
+  winner
+  runners
+end
+
+# Inherited Objects
+Animal = {legs=4 eyes=2}
+Insect = {Animal legs=6}
+Enumerable = {Array
+  each = fun -> "Not implemented"
+  reduce = fun -> 'Not implemented'
+}
+
+# Inherited Arrays
+[Enumerable 1,2,3,4,5]
+
+# Interpolated Strings
+# Based on an idea from Google's caja project
+# http://bit.ly/4irVV1
+"Hello $name"
+HTML"""
+  <html>
+    <head>
+      <title>$title</title>
+    </head>
+    <body style="$style">
+      ...
+    </body>
+  </html>
   """
-HTML"<h$l>$title</h$l>"
+JSON"{items: ${items.length}}"
 
-# http://google-caja.googlecode.com/svn/changes/mikesamuel/string-interpolation-29-Jan-2008/trunk/src/js/com/google/caja/interp/index.html
-# Interpolated use cases
-  "$noun $verb"
-  #-> String.interpolate(noun, " ", verb)
-  #=> "World Greets"
 
-  SQL"SELECT * FROM users WHERE name=$name"
-  #-> SQL.interpolate("SELECT * FROM users WHERE name=", name)
-  #=> "SELECT * FROM users WHERE name='O''Connor'"
-
-  JSON"{name: ${data.name}, age: ${data.age}"
-  #-> JSON.interpolate("{name: ", name, ", data.age: ", data.age}")
-  #=> "{name: "Tim", age: 27}"
-
-# Regular Expression literals
-/123/g
-/^([^a-z]+)$/i
-
-# List Literals
-[ 1, 2, 3, 4 ]
-[
-  1,0,0
-  0,1,0
-  0,0,1
-]
-
-# Object Literals
-{name="Tim" age=27}
-{
-  name="Tim"
-  age=27
-}
-
-# Delegated Objects
-# Creates a new object that inherits from the given
-# prototype, and then overrides some properties.
-{Animal name="George" color="Brown"}
-{Animal
-  name="George"
-  color="Brown"
-}
-
-# Delegated Lists
-# Creates a clone of the passed in List-like object
-# but replaces the contents with that given.
-[HTMLColors 0x000000, 0xff8800, 0x0088ff, 0x887788]
-[HTMLColors
-  0x000000
-  0xff8800
-  0x0088ff
-  0x887788
-]
-
-# Function literal
-fun x -> x
-# Curried function
-fun a -> fun b -> b
-    </script>
+# Interpolated strings simplified:
+"${a}${b}${c}"
+"plain"
+"$plain"
+""
+HTML""
+  </script>
   </head>
   <body>
     <h1>Jack</h1>
