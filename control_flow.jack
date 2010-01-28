@@ -2,3 +2,8 @@
 language = "Jack"
 cool = true
 Animal = {legs=4 eyes=2}
+
+# Conditionals
+if strange_stuff
+  Octocat = {Animal legs=8}
+end
