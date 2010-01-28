@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title>Jack compiler in the browser</title>
+    <link rel="stylesheet" href="style/style.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="style/sh_navy.min.css" type="text/css" charset="utf-8">
+    <script type="text/javascript" src="style/sh_main.min.js"></script>
+    <script type="text/javascript" src="style/sh_javascript.min.js"></script>
+    <script type="text/javascript" src="json2-min.js"></script>
+    <script type="text/javascript" src="jison/util/typal.js"></script>
+    <script type="text/javascript" src="jison/util/set.js"></script>
+    <script type="text/javascript" src="jison.js"></script>
+    <script type="text/javascript" src="jack.js"></script>
+    <script type="text/javascript" src="demo.js"></script>
+    <script id="sample" type="text/jac  k">
+# Assignment:
+number: 42
+opposite_day: true
+
+# Conditions:
+number: -42 if opposite_day
+
+# Functions:
+square: (x) -> x * x
+
+# Arrays:
+list: [1, 2, 3, 4, 5]
+
+# Objects:
+math: {
+  root:   Math.sqrt
+  square: square
+  cube:   (x) -> x * square x
+}
+    </script>
+  </head>
+  <body>
+    <h1>Jack</h1>
+    <h2>Making programming playful</h2>
+    <p>
+      NOTE: This doesn't compile all the Jack language yet.
+      This compiler is still under heavy development.
+      If you do discover any missing features, feel free to file tickets on my <a href="http://github.com/creationix/jack/issues">github page</a>.</p>
+    <div class="code" id="source_wrapper">
+      <textarea wrap="off" id="source" class="scroll"></textarea>
+    </div>
+    <pre class="sh_javascript code scroll" id="output"></pre>
+    <div id="nav">
+      <a href="http://github.com/jack/coffeepot" target="_blank">Source Code</a>
+    </div>
+    <div id="status">Compiling...</div>
+  </body>
+</html>
