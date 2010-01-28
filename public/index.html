@@ -3,6 +3,31 @@
     <title>Jack compiler in the browser</title>
     <link rel="stylesheet" href="style/style.css" type="text/css" charset="utf-8">
     <link rel="stylesheet" href="style/sh_navy.min.css" type="text/css" charset="utf-8">
+    <script type="text/javascript">
+      if (typeof Object.create !== 'function') {
+          Object.create = function (o) {
+              function F() {}
+              F.prototype = o;
+              return new F();
+          };
+      }
+      if (typeof Object.keys !== 'function') {
+          Object.keys = function (o) {
+            var keys = [], key;
+            for (key in o) {
+              if (o.hasOwnProperty(key)) {
+                keys.push(key);
+              }
+            }
+            return keys;
+          };
+      }
+      if (typeof String.prototype.trim !== 'function') {
+          String.prototype.trim = function () {
+            return this.replace(/^\s*/, "").replace(/\s*$/, "");
+          };
+      }
+    </script>
     <script type="text/javascript" src="style/sh_main.min.js"></script>
     <script type="text/javascript" src="style/sh_javascript.min.js"></script>
     <script type="text/javascript" src="json2-min.js"></script>
