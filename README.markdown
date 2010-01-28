@@ -18,40 +18,6 @@ Jack is a new language in development that gets translated to pure JavaScript an
  - Implement a real compiler with some static analysis, not just regular expression hacks.
  - Unit tests all the way!
 
-## Sample syntax
+## Sample
 
-    // require an external module
-    var sys = require('sys')
-
-    // Define a group of methods to be reused (like ruby modules)
-    var friendly = object:
-      greet(): sys.puts("{name} says hello")
-
-    // Create a prototype object (kinda like a class)
-    var tim = object:
-      include friendly // Mixin in the friendly methods
-      name: "Tim"
-      age: 27
-      family: "Caswell" 
-
-    // Make another object based on the first (inheritance)
-    var miranda = object (tim):
-      name: "Miranda"
-      age: 25
-
-    // An object factory function (like a class constructor)
-    var Person = function (name, age):
-      object(tim):
-        name: name
-        age: age
-
-    // Use the object factory  
-    var jack = Person("Jack", 3)
-
-    // Test the objects
-    tim.greet
-    // Tim says hello
-    miranda.greet
-    // Miranda says hello
-    jack.greet
-    // Jack says hello
+<http://static.creationix.com/jack/public/index.html>
