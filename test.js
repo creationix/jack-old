@@ -1,8 +1,8 @@
+require.paths.unshift(__dirname + "/lib");
 var Jack = require('jack').Jack;
-var File = require('file');
-process.mixin(require('sys'));
+var Fs = require('fs');
 
-File.read('control_flow.jack').addCallback(function (code) {
-  puts(Jack.compile(code));
+Fs.readFile('control_flow.jack', 'utf8', function (err, code) {
+  console.log(Jack.compile(code));
 });
 
