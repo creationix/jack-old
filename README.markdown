@@ -20,4 +20,4 @@ Jack is a new language in development that gets translated to pure JavaScript an
 
 ## Sample
 
-<http://static.creationix.com/jack/public/index.html>
+<http://creationix.com/jack/public/index.html>
