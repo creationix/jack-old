@@ -105,8 +105,12 @@ function lex(string, filename) {
       value = undefined;
       continue;
 
+    // This is pretty lax.  It actually lets invalid numbers through.
+    // The plus side is that is leaves the original formatting as is.
+    // Maybe later we can validate a little more and preserve the only class of formatting
+    // IE: hex, octal, decimal, scientific
     case NUMBER: // number
-      if ((c >= 0 && c <= 9) || c === "." || c === "e"  || c === "E" || c === "+" || c === "-") {
+      if ((c >= "0" && c <= "9") || c === "." || c === "e"  || c === "E" || c === "+" || c === "-") {
         value += c;
         break;
       }
@@ -237,6 +241,6 @@ function lexFile(filename) {
 //console.dir(lex("\"\\n\\r\\t\\0\\1\\2\\3\\/\\\\\""));
 //console.dir(lexFile("tests/basics.js"));
 //console.dir(lexFile("tests/strings.js"));
-//console.dir(lexFile("tests/basics.jack"));
+console.dir(lexFile("tests/basics.jack"));
 //console.dir(lexFile("tests/strings.jack"));
 
