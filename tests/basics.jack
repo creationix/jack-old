@@ -21,4 +21,7 @@ false
 6.0221415e23
 2.71828
 3.1415926
+// This is a comment
+/* This is a
+multiline comment*/
 

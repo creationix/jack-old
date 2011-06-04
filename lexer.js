@@ -1,17 +1,29 @@
+var START        = 0x00,
+    NAME         = 0x10,
+    NUMBER       = 0x20,
+    STRING       = 0x30,
+    STRING_SKIP  = 0x31,
+    HEREDOC      = 0x38,
+    HEREDOC_SKIP = 0x39,
+    COMMENT      = 0x40,
+    COMMENT_MULTILINE = 0x48;
+
+var hex4reg = /^[0-9a-f]{4}/i;
 
 function lex(string, filename) {
   var i = 0, length = string.length;
   var tokens = [];
-  var state = 0;
-  var line = 1;
-  var column = 1;
+  var state = START;
+  var line = 0;
+  var lineOffset = 0;
   
   var value, quote;
   while (i < length) {
+    var column = i - lineOffset;
     var c = string[i];
-//    console.log("%d %d:%d state-%d: %s", i, line, column, state, JSON.stringify(c));
+    console.log("%d %d:%d state-0x%s: %s", i, line, column, state.toString(16), JSON.stringify(c));
     switch (state) {
-    case 0: // starting state
+    case START:
 
       // Ignore horizontal white-space
       if (c === " " || c === "\t") { break; }
@@ -21,7 +33,9 @@ function lex(string, filename) {
         tokens.push({type: "operator", value: "\n"});
         column = 0;
         line++;
-        break;
+        i++;
+        lineOffset = i;
+        continue;
       }
       
       // Look for the start of identifiers and keywords
@@ -29,14 +43,14 @@ function lex(string, filename) {
           (c >= "A" && c <= "Z") ||
           c === "$" || c === "_") {
         value = c;
-        state = 1;
+        state = NAME;
         break;
       }
       
       // Look for the start of numbers
       if (c >= "0" && c <= "9") {
         value = c;
-        state = 2;
+        state = NUMBER;
         break;
       }
       
@@ -44,8 +58,29 @@ function lex(string, filename) {
       if (c === "'" || c === '"') {
         quote = c;
         value = "";
-        state = 3;
+        if (string[i + 1] === quote && string[i + 2] === quote) {
+          state = HEREDOC;
+          i += 3;
+          continue;
+        }
+        state = STRING;
         break;
+      }
+      
+      if (c === "/") {
+        var next = string[i + 1];
+        if (next === "/") {
+          state = COMMENT;
+          value = "";
+          i += 1;
+          break;
+        }
+        if (next === "*") {
+          state = COMMENT_MULTILINE;
+          value = "";
+          i += 1;
+          break;
+        }
       }
       
       // The rest are operators
@@ -57,7 +92,7 @@ function lex(string, filename) {
       error("Unexpected character " + JSON.stringify(c));
       break;
 
-    case 1: // name
+    case NAME:
       if ((c >= "a" && c <= "z") ||
           (c >= "A" && c <= "Z") ||
           (c >= "0" && c <= "9") ||
@@ -66,23 +101,23 @@ function lex(string, filename) {
         break;
       }
       tokens.push({type: "name", value: value});
-      state = 0;
+      state = START;
       value = undefined;
       continue;
 
-    case 2: // number
+    case NUMBER: // number
       if ((c >= 0 && c <= 9) || c === "." || c === "e"  || c === "E" || c === "+" || c === "-") {
         value += c;
         break;
       }
       tokens.push({type: "number", value: value});
-      state = 0;
+      state = START;
       value = undefined;
       continue;
     
-    case 3: // string
+    case STRING:
       if (c === "\\") {
-        state = 4;
+        state = STRING_SKIP;
         break;
       }
       if (c === "\n") {
@@ -94,17 +129,27 @@ function lex(string, filename) {
         break;
       }
       
-      if (value.length === 0) {
-        state = 5;
-        break;
-      }
-      
       tokens.push({type: "string", value: value});
-      state = 0;
+      state = START;
       quote = value = undefined;
       break;
+
+    case HEREDOC:
+      if (c === quote && string[i + 1] === quote && string[i + 2] === quote) {
+        tokens.push({type: "heredoc", value: value});
+        state = START;
+        quote = value = undefined;
+        i += 3;
+        continue;
+      }
+      if (c === "\\") {
+        state = HEREDOC_SKIP;
+        break;
+      }
+      value += c;
+      break;
     
-    case 4: case 7: // ignore next 
+    case STRING_SKIP: case HEREDOC_SKIP:
       if (c === "n") value += "\n";
       else if (c === "r") value += "\r";
       else if (c === "t") value += "\t";
@@ -119,40 +164,38 @@ function lex(string, filename) {
       else if (c === "5") value += "\5";
       else if (c === "6") value += "\6";
       else if (c === "7") value += "\7";
-      // TODO: Implement /uXXXX style strings
+      else if (c === "u" && hex4reg.test(string.substr(i + 1, 4))) {
+        value += String.fromCharCode(parseInt(string.substr(i + 1, 4), 16));
+        i += 4;
+      }
       else value += c;
       state--;
       break;
     
-    case 5: // maybe end string
-      if (c === quote) {
-        state = 6;
-        break;
-      }
-      tokens.push({type: "string", value: value});
-      state = 0;
-      quote = value = undefined;
-      continue;
-    
-    case 6: // heredoc string
-      if (c === quote && string[i + 1] === quote && string[i + 2] === quote) {
-        tokens.push({type: "string", value: value});
-        state = 0;
-        quote = value = undefined;
-        i += 3;
+    case COMMENT:
+      if (c === "\n" || c === "\r") {
+        tokens.push({type: "comment", value: value});
+        value = undefined;
+        state = START;
         continue;
       }
-      if (c === "\\") {
-        state = 7;
+      value += c;
+      break;
+
+    case COMMENT_MULTILINE:
+      if (c === "*" && string[i + 1] === "/") {
+        tokens.push({type: "comment_multiline", value: value});
+        value = undefined;
+        state = START;
+        i++;
         break;
       }
       value += c;
       break;
     
-    default: error("State " + state + " not implemented!");
+    default: error("State 0x" + state.toString(16) + " not implemented!");
     }
 
-    column++;
     i++;
   }
   return postProcess(tokens);
@@ -188,10 +231,12 @@ function lexFile(filename) {
   filename = require('path').resolve(filename);
   return lex(require('fs').readFileSync(filename, 'utf8'), filename);
 }
-console.dir(lex("var a = 42;"));
-console.dir(lex("\"\\n\\r\\t\\0\\1\\2\\3\\/\\\\\""));
-console.dir(lexFile("tests/basics.js"));
-console.dir(lexFile("tests/strings.js"));
-console.dir(lexFile("tests/basics.jack"));
-console.dir(lexFile("tests/strings.jack"));
+//console.dir(lex("'\\u79c1\\u306fJavaScript\\u3092\\u611b\\u3057\\u3066'"));
+//console.dir(lexFile(__filename));
+//console.dir(lex("var a = 42;"));
+//console.dir(lex("\"\\n\\r\\t\\0\\1\\2\\3\\/\\\\\""));
+//console.dir(lexFile("tests/basics.js"));
+//console.dir(lexFile("tests/strings.js"));
+//console.dir(lexFile("tests/basics.jack"));
+//console.dir(lexFile("tests/strings.jack"));
 
