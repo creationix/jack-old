@@ -30,4 +30,5 @@ HTML'''<!doctype html>
   </body>
 </html>
 '''
+"""\n\r\t\0"""
 "${hello}${world}"
