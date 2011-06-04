@@ -21,7 +21,7 @@ function lex(string, filename) {
   while (i < length) {
     var column = i - lineOffset;
     var c = string[i];
-    console.log("%d %d:%d state-0x%s: %s", i, line, column, state.toString(16), JSON.stringify(c));
+//    console.log("%d %d:%d state-0x%s: %s", i, line, column, state.toString(16), JSON.stringify(c));
     switch (state) {
     case START:
 
@@ -58,9 +58,9 @@ function lex(string, filename) {
       if (c === "'" || c === '"') {
         quote = c;
         value = "";
-        if (string[i + 1] === quote && string[i + 2] === quote) {
+        if (string[i + 1] === quote && string[i + 2] === quote && string[i + 3] === "\n") {
           state = HEREDOC;
-          i += 3;
+          i += 4;
           continue;
         }
         state = STRING;
@@ -224,23 +224,28 @@ function postProcess(tokens) {
         token.value = ";";
       }
     }
+    else if (token.type === "heredoc") {
+      token.type = "string";
+      token.value = blockTrim(token.value);
+    }
     newTokens.push(token);
   }
   
   return newTokens
 }
 
-
-function lexFile(filename) {
-  filename = require('path').resolve(filename);
-  return lex(require('fs').readFileSync(filename, 'utf8'), filename);
+function blockTrim(value) {
+  var indent;
+  var lines = value.split("\n");
+  lines.forEach(function (line, index) {
+    if (index < lines.length - 1 && line.trim().length === 0) return;
+    var m = line.match(/^[ \t]*/);
+    var i = m[0].length;
+    if (indent === undefined || i < indent) indent = i
+  });
+  return lines.map(function (line) {
+    return line.substr(indent);
+  }).join("\n");
 }
-//console.dir(lex("'\\u79c1\\u306fJavaScript\\u3092\\u611b\\u3057\\u3066'"));
-//console.dir(lexFile(__filename));
-//console.dir(lex("var a = 42;"));
-//console.dir(lex("\"\\n\\r\\t\\0\\1\\2\\3\\/\\\\\""));
-//console.dir(lexFile("tests/basics.js"));
-//console.dir(lexFile("tests/strings.js"));
-console.dir(lexFile("tests/basics.jack"));
-//console.dir(lexFile("tests/strings.jack"));
 
+module.exports = lex;
