@@ -1,0 +1,33 @@
+""
+''
+"Hello"
+'Hello'
+"私はJavaScriptを愛して"
+'\u79c1\u306fJavaScript\u3092\u611b\u3057\u3066'
+"\"Hello\""
+"\\\/\b\f\n\r\t"
+"\'"
+'\''
+"""This
+is multiline"""
+'''And so
+is this'''
+    """How about indented multiline
+    That's cool isn't it?"""
+		"""How about indented multiline
+		This time with tabs"""
+JSON"{hello: $world}"
+"I want to $interpolate"
+"$interpolate is cool"
+"${raw.code} can interpolate $too"
+"Hello $world!"
+HTML'''<!doctype html>
+<html>
+  <head>
+    <title>$title</title>
+  </head>
+  <body>
+  </body>
+</html>
+'''
+"${hello}${world}"
