@@ -1,1 +1,1 @@
-../../jison/lib/jison.js
+../jison/lib/jison.js
